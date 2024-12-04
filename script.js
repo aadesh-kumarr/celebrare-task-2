@@ -10,6 +10,7 @@ function addBox(container) {
   textBox.innerText = "new box";
   textBox.className = 'text-box';
   textBox.style.position = 'absolute';
+  textBox.style.backgroundColor = 'rgba(255,255,255,0.3)';
   textBox.style.top = '50px';
   textBox.style.left = '50px';
   textBox.style.fontFamily = 'Arial';
@@ -19,7 +20,6 @@ function addBox(container) {
   textBox.style.maxWidth = '200px'; // Set your desired max width here
   textBox.style.wordWrap = 'break-word'; // Ensure long words break to next line
   textBox.style.whiteSpace = 'normal';
-
   textBox.addEventListener('click', () => setActiveBox(textId));
   textBox.addEventListener('mousedown', dragStart);
 
