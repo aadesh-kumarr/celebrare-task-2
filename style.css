@@ -71,3 +71,18 @@ footer {
   width: 100%;
   height: auto;
 }
+
+.delete-btn {
+  padding: 3px 6px;
+  font-size: 12px;
+  border: 1px solid red;
+  border-radius: 3px;
+  background-color: white;
+  cursor: pointer;
+  color: red;
+}
+.delete-btn:hover {
+  background-color: #f8d7da;
+}
+
+
