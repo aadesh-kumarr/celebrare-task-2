@@ -88,6 +88,7 @@ footer {
 
 /* Darken the button when it's active */
 .button-active {
-  background-color: #007bff; /* Darker background color */
+  background-color: grey; /* Darker background color */
   color: white;
 }
+
