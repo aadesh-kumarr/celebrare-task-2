@@ -7,6 +7,7 @@ function addBox(container) {
   const textId = `text-box-${Date.now()}`;
   textBox.id = textId;
   textBox.contentEditable = true;
+  textBox.innerText = "new box";
   textBox.className = 'text-box';
   textBox.style.position = 'absolute';
   textBox.style.top = '50px';
@@ -15,6 +16,9 @@ function addBox(container) {
   textBox.style.fontSize = '16px';
   textBox.style.border = '1px solid #ccc';
   textBox.style.padding = '5px';
+  textBox.style.maxWidth = '200px'; // Set your desired max width here
+  textBox.style.wordWrap = 'break-word'; // Ensure long words break to next line
+  textBox.style.whiteSpace = 'normal';
 
   textBox.addEventListener('click', () => setActiveBox(textId));
   textBox.addEventListener('mousedown', dragStart);
@@ -23,10 +27,54 @@ function addBox(container) {
   setActiveBox(textId);
 }
 
+// Toggle the style of the active text box
+function toggleStyle(style) {
+  if (!activeBox) return;
 
+  const currentStyle = activeBox.element.style[style];
+  if (style === 'fontWeight') {
+    activeBox.element.style.fontWeight = currentStyle === 'bold' ? 'normal' : 'bold';
+  } else if (style === 'fontStyle') {
+    activeBox.element.style.fontStyle = currentStyle === 'italic' ? 'normal' : 'italic';
+  } else if (style === 'textDecoration') {
+    activeBox.element.style.textDecoration = currentStyle === 'underline' ? 'none' : 'underline';
+  }
 
+  // After toggling, update the button styles to reflect changes
+  updateButtonStyles();
+}
 
+// Update the button styles based on active text box styles
+function updateButtonStyles() {
+  if (!activeBox) return;
 
+  const fontWeight = activeBox.element.style.fontWeight === 'bold';
+  const fontStyle = activeBox.element.style.fontStyle === 'italic';
+  const textDecoration = activeBox.element.style.textDecoration === 'underline';
+
+  const boldButton = document.querySelector("button[onclick=\"toggleStyle('fontWeight')\"]");
+  const italicButton = document.querySelector("button[onclick=\"toggleStyle('fontStyle')\"]");
+  const underlineButton = document.querySelector("button[onclick=\"toggleStyle('textDecoration')\"]");
+
+  // Apply 'button-active' class if the style is applied to the text box
+  if (fontWeight) {
+    boldButton.classList.add('button-active');
+  } else {
+    boldButton.classList.remove('button-active');
+  }
+
+  if (fontStyle) {
+    italicButton.classList.add('button-active');
+  } else {
+    italicButton.classList.remove('button-active');
+  }
+
+  if (textDecoration) {
+    underlineButton.classList.add('button-active');
+  } else {
+    underlineButton.classList.remove('button-active');
+  }
+}
 
 // Set the active text box and update its border
 function setActiveBox(id) {
@@ -39,7 +87,10 @@ function setActiveBox(id) {
     fontSize: parseInt(document.getElementById(id).style.fontSize, 10),
   };
   activeBox.element.style.border = '2px solid blue';
-  
+
+  // Update button styles based on the active box's current styles
+  updateButtonStyles();
+
   // Show the delete button in the footer
   const footer = activeBox.element.closest('.container').querySelector('footer');
   const deleteButton = footer.querySelector('.delete-btn');
@@ -83,20 +134,6 @@ function updateTextBox(updates) {
   const { element } = activeBox;
   if (updates.fontFamily) element.style.fontFamily = updates.fontFamily;
   if (updates.fontSize) element.style.fontSize = `${updates.fontSize}px`;
-}
-
-// Toggle the style of the active text box
-function toggleStyle(style) {
-  if (!activeBox) return;
-
-  const currentStyle = activeBox.element.style[style];
-  if (style === 'fontWeight') {
-    activeBox.element.style.fontWeight = currentStyle === 'bold' ? 'normal' : 'bold';
-  } else if (style === 'fontStyle') {
-    activeBox.element.style.fontStyle = currentStyle === 'italic' ? 'normal' : 'italic';
-  } else if (style === 'textDecoration') {
-    activeBox.element.style.textDecoration = currentStyle === 'underline' ? 'none' : 'underline';
-  }
 }
 
 // Delete the active text box
