@@ -160,7 +160,7 @@ images.forEach((src) => {
   slide.className = 'swiper-slide';
   slide.innerHTML = `
     <div class="container">
-      <h1>celebrere</h1>
+      <h1>text editor with Swiper</h1>
       <div class="img-cont" id="img-cont-${src}">
         <img src="${src}" alt="Image">
       </div>
