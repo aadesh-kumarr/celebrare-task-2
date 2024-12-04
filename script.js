@@ -17,9 +17,11 @@ function addBox(container) {
   textBox.style.fontSize = '16px';
   textBox.style.border = '1px solid #ccc';
   textBox.style.padding = '5px';
-  textBox.style.maxWidth = '200px'; // Set your desired max width here
+  textBox.style.maxWidth = '300px';  // Set your desired max width here
+  textBox.style.maxHeight = '200px'; // Set your desired max height here
   textBox.style.wordWrap = 'break-word'; // Ensure long words break to next line
-  textBox.style.whiteSpace = 'normal';
+  textBox.style.whiteSpace = 'normal'; // Allow wrapping of text (default)
+  textBox.style.overflow = 'auto';
   textBox.addEventListener('click', () => setActiveBox(textId));
   textBox.addEventListener('mousedown', dragStart);
 
