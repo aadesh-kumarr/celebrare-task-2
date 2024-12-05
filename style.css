@@ -92,3 +92,9 @@ footer {
   color: white;
 }
 
+.text-controls {
+  display: none; /* Initially hidden */
+}
+.text-controls.active {
+  display: block; /* Show when active */
+}

@@ -2,12 +2,12 @@ let activeBox = null;
 let dragOffset = { x: 0, y: 0 };
 
 // Add the box to the container and attach necessary event listeners
-function addBox(container) {
+function addBox(container, defaultText = "new box") {
   const textBox = document.createElement('div');
   const textId = `text-box-${Date.now()}`;
   textBox.id = textId;
   textBox.contentEditable = true;
-  textBox.innerText = "new box";
+  textBox.innerText = defaultText;
   textBox.className = 'text-box';
   textBox.style.position = 'absolute';
   textBox.style.backgroundColor = 'rgba(255,255,255,0.3)';
@@ -17,10 +17,10 @@ function addBox(container) {
   textBox.style.fontSize = '16px';
   textBox.style.border = '1px solid #ccc';
   textBox.style.padding = '5px';
-  textBox.style.maxWidth = '300px';  // Set your desired max width here
-  textBox.style.maxHeight = '200px'; // Set your desired max height here
-  textBox.style.wordWrap = 'break-word'; // Ensure long words break to next line
-  textBox.style.whiteSpace = 'normal'; // Allow wrapping of text (default)
+  textBox.style.maxWidth = '300px';
+  textBox.style.maxHeight = '200px';
+  textBox.style.wordWrap = 'break-word';
+  textBox.style.whiteSpace = 'normal';
   textBox.style.overflow = 'auto';
   textBox.addEventListener('click', () => setActiveBox(textId));
   textBox.addEventListener('mousedown', dragStart);
@@ -96,7 +96,7 @@ function setActiveBox(id) {
   // Show the delete button in the footer
   const footer = activeBox.element.closest('.container').querySelector('footer');
   const deleteButton = footer.querySelector('.delete-btn');
-  deleteButton.style.display = 'inline-block';  // Make the delete button visible
+  deleteButton.style.display = 'inline-block'; // Make the delete button visible
 }
 
 // Start dragging the active box
@@ -136,6 +136,7 @@ function updateTextBox(updates) {
   const { element } = activeBox;
   if (updates.fontFamily) element.style.fontFamily = updates.fontFamily;
   if (updates.fontSize) element.style.fontSize = `${updates.fontSize}px`;
+  if(updates.color) element.style.color = updates.color;
 }
 
 // Delete the active text box
@@ -160,44 +161,55 @@ images.forEach((src) => {
   slide.className = 'swiper-slide';
   slide.innerHTML = `
     <div class="container">
-      <h1>text editor with Swiper</h1>
+      <h1>Text Editor with Swiper</h1>
       <div class="img-cont" id="img-cont-${src}">
         <img src="${src}" alt="Image">
       </div>
-      <footer>
-        <div>
-          <select class="buttons" onchange="updateTextBox({ fontFamily: this.value })">
-            <option value="Arial">Arial</option>
-            <option value="Times New Roman">Times New Roman</option>
-            <option value="Courier New">Courier New</option>
-            <option value="Georgia">Georgia</option>
-          </select>
-          <input
-            type="number"
-            class="buttons"
-            min="8"
-            max="72"
-            value="16"
-            onchange="updateTextBox({ fontSize: parseInt(this.value, 10) })"
-          />
-          <button class="buttons" onclick="toggleStyle('fontWeight')"><b>B</b></button>
-          <button class="buttons" onclick="toggleStyle('fontStyle')"><i>I</i></button>
-          <button class="buttons" onclick="toggleStyle('textDecoration')"><u>U</u></button>
-          <button class="buttons" onclick="addBox(document.getElementById('img-cont-${src}'))">+ Add text box</button>
-          <!-- Delete button, initially hidden -->
-          <button class="buttons delete-btn" onclick="deleteTextBox()" style="display: none;">Delete</button>
-        </div>
-      </footer>
+<footer>
+  <div>
+    <select class="buttons" onchange="updateTextBox({ fontFamily: this.value })">
+      <option value="Arial">Arial</option>
+      <option value="Times New Roman">Times New Roman</option>
+      <option value="Courier New">Courier New</option>
+      <option value="Georgia">Georgia</option>
+    </select>
+    <input
+      type="number"
+      class="buttons"
+      min="8"
+      max="72"
+      value="16"
+      onchange="updateTextBox({ fontSize: parseInt(this.value, 10) })"
+    />
+    <input
+      type="color"
+      class="buttons"
+      onchange="updateTextBox({ color: this.value })"
+      title="Change Font Color"
+    />
+    <button class="buttons" onclick="toggleStyle('fontWeight')"><b>B</b></button>
+    <button class="buttons" onclick="toggleStyle('fontStyle')"><i>I</i></button>
+    <button class="buttons" onclick="toggleStyle('textDecoration')"><u>U</u></button>
+    <button class="buttons" onclick="addBox(document.getElementById('img-cont-${src}'))">+ Add text box</button>
+    <button class="buttons delete-btn" onclick="deleteTextBox()" style="display: none;">Delete</button>
+  </div>
+</footer>
+
+
     </div>
   `;
   swiperWrapper.appendChild(slide);
+
+  // Add a default text box to the current page
+  const imgContainer = document.getElementById(`img-cont-${src}`);
+  addBox(imgContainer, "Default text");
 });
 
 // Initialize Swiper with disabled dragging
 const swiper = new Swiper('.swiper', {
   direction: 'horizontal',
   loop: true,
-  simulateTouch: false,  // Disable dragging/swiping
+  simulateTouch: false, // Disable dragging/swiping
   navigation: {
     nextEl: '.swiper-button-next',
     prevEl: '.swiper-button-prev',
@@ -207,3 +219,5 @@ const swiper = new Swiper('.swiper', {
     clickable: true,
   },
 });
+
+
