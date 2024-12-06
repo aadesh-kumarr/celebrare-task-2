@@ -4,7 +4,7 @@ let dragOffset = { x: 0, y: 0 };
 // Add the box to the container and attach necessary event listeners
 function addBox(container, defaultText = "new box") {
   const textBox = document.createElement('div');
-  const textId = `text-box-${Date.now()}`;
+  const textId = `text-box-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
   textBox.id = textId;
   textBox.contentEditable = true;
   textBox.innerText = defaultText;
@@ -136,7 +136,7 @@ function updateTextBox(updates) {
   const { element } = activeBox;
   if (updates.fontFamily) element.style.fontFamily = updates.fontFamily;
   if (updates.fontSize) element.style.fontSize = `${updates.fontSize}px`;
-  if(updates.color) element.style.color = updates.color;
+  if (updates.color) element.style.color = updates.color;
 }
 
 // Delete the active text box
@@ -156,7 +156,10 @@ function deleteTextBox() {
 const images = ['p1.jpg', 'p2.jpg', 'p3.jpg'];
 const swiperWrapper = document.getElementById('swiper-wrapper');
 
-images.forEach((src) => {
+// Add unique default texts for each box
+const defaultTexts = ["Text for slide 1", "Text for slide 2", "Text for slide 3"];
+
+images.forEach((src, index) => {
   const slide = document.createElement('div');
   slide.className = 'swiper-slide';
   slide.innerHTML = `
@@ -194,15 +197,13 @@ images.forEach((src) => {
     <button class="buttons delete-btn" onclick="deleteTextBox()" style="display: none;">Delete</button>
   </div>
 </footer>
-
-
     </div>
   `;
   swiperWrapper.appendChild(slide);
 
-  // Add a default text box to the current page
+  // Add a default text box with unique text to each page
   const imgContainer = document.getElementById(`img-cont-${src}`);
-  addBox(imgContainer, "Default text");
+  addBox(imgContainer, defaultTexts[index]);
 });
 
 // Initialize Swiper with disabled dragging
@@ -219,5 +220,3 @@ const swiper = new Swiper('.swiper', {
     clickable: true,
   },
 });
-
-
