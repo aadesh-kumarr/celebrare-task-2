@@ -54,9 +54,11 @@ function updateButtonStyles() {
   const fontStyle = activeBox.element.style.fontStyle === 'italic';
   const textDecoration = activeBox.element.style.textDecoration === 'underline';
 
-  const boldButton = document.querySelector("button[onclick=\"toggleStyle('fontWeight')\"]");
-  const italicButton = document.querySelector("button[onclick=\"toggleStyle('fontStyle')\"]");
-  const underlineButton = document.querySelector("button[onclick=\"toggleStyle('textDecoration')\"]");
+  const activeContainer = activeBox.element.closest('.container');
+
+  const boldButton = activeContainer.querySelector("button[onclick=\"toggleStyle('fontWeight')\"]");
+  const italicButton = activeContainer.querySelector("button[onclick=\"toggleStyle('fontStyle')\"]");
+  const underlineButton = activeContainer.querySelector("button[onclick=\"toggleStyle('textDecoration')\"]");
 
   // Apply 'button-active' class if the style is applied to the text box
   if (fontWeight) {
@@ -170,6 +172,7 @@ images.forEach((src, index) => {
       </div>
 <footer>
   <div>
+  <div class="buttons">
     <select class="buttons" onchange="updateTextBox({ fontFamily: this.value })">
       <option value="Arial">Arial</option>
       <option value="Times New Roman">Times New Roman</option>
@@ -193,6 +196,7 @@ images.forEach((src, index) => {
     <button class="buttons" onclick="toggleStyle('fontWeight')"><b>B</b></button>
     <button class="buttons" onclick="toggleStyle('fontStyle')"><i>I</i></button>
     <button class="buttons" onclick="toggleStyle('textDecoration')"><u>U</u></button>
+    </div>
     <button class="buttons" onclick="addBox(document.getElementById('img-cont-${src}'))">+ Add text box</button>
     <button class="buttons delete-btn" onclick="deleteTextBox()" style="display: none;">Delete</button>
   </div>
